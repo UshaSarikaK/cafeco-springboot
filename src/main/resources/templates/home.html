@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaféStage - Where Cafes Meet Creativity</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+          color: #333;
+          line-height: 1.5;
+        }
+
+        a {
+          text-decoration: none;
+          color: inherit;
+        }
+
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+          background-color: white;
+          position: sticky;
+          top: 0;
+          z-index: 100;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 16px 20px;
+        }
+
+        .logo {
+          display: flex;
+          align-items: center;
+          font-size: 24px;
+          font-weight: 700;
+          color: #333;
+        }
+
+        .logo-icon {
+          color: #6B21FF;
+          margin-right: 10px;
+          font-size: 28px;
+        }
+
+        .nav-links {
+          display: flex;
+          gap: 24px;
+        }
+
+        .nav-link {
+          font-weight: 500;
+        }
+
+        .button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 10px 20px;
+          border-radius: 100px;
+          font-weight: 500;
+          cursor: pointer;
+        }
+
+        .button-primary {
+          background-color: #6B21FF;
+          color: white;
+        }
+
+        .perform-button {
+          padding: 12px 24px;
+        }
+
+        .button-icon {
+          margin-right: 8px;
+        }
+
+        /* Hero Section */
+        .hero {
+          background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url('https://ansainteriors.com/wp-content/uploads/2019/11/cafe-interior-design.jpg');
+          background-size: cover;
+          background-position: center;
+          color: white;
+          padding: 120px 20px;
+          text-align: center;
+          position: relative;
+        }
+
+        .hero-content {
+          max-width: 800px;
+          margin: 0 auto;
+        }
+
+        .hero-title {
+          font-size: 60px;
+          line-height: 1.2;
+          margin-bottom: 24px;
+        }
+
+        .hero-title span {
+          color: #8B5CF6;
+        }
+
+        .hero-subtitle {
+          font-size: 20px;
+          margin-bottom: 40px;
+        }
+
+        .hero-buttons {
+          display: flex;
+          justify-content: center;
+          gap: 16px;
+        }
+
+        .button-outline {
+          border: 2px solid white;
+          background-color: transparent;
+          color: white;
+        }
+
+        .scroll-down {
+          position: absolute;
+          bottom: 40px;
+          left: 50%;
+          transform: translateX(-50%);
+          animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+          0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+          }
+          40% {
+            transform: translateY(-10px);
+          }
+          60% {
+            transform: translateY(-5px);
+          }
+        }
+
+        /* Cafes Section */
+        .cafes-section {
+          padding: 60px 20px;
+        }
+
+        .section-header {
+          margin-bottom: 40px;
+        }
+
+        .section-title {
+          font-size: 36px;
+          margin-bottom: 20px;
+        }
+
+        .filter-tabs {
+          display: flex;
+          gap: 12px;
+          margin-bottom: 30px;
+          flex-wrap: wrap;
+        }
+
+        .filter-tab {
+          padding: 8px 16px;
+          border-radius: 100px;
+          cursor: pointer;
+          font-weight: 500;
+          font-size: 14px;
+        }
+
+        .tab-active {
+          background-color: #6B21FF;
+          color: white;
+        }
+
+        .tab-inactive {
+          background-color: #f0f0f0;
+          color: #333;
+        }
+
+        .cafes-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+          gap: 24px;
+        }
+
+        .cafe-card {
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          background-color: white;
+          transition: transform 0.3s ease;
+        }
+
+        .cafe-card:hover {
+          transform: translateY(-5px);
+        }
+
+        .card-image {
+          height: 180px;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .card-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .price-tag {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          background-color: #6B21FF;
+          color: white;
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-weight: 600;
+        }
+
+        .card-content {
+          padding: 16px;
+        }
+
+        .cafe-name {
+          font-size: 20px;
+          font-weight: 600;
+          margin-bottom: 4px;
+        }
+
+        .rating {
+          display: flex;
+          align-items: center;
+          margin-bottom: 12px;
+        }
+
+        .star-icon {
+          color: #FFD700;
+          margin-right: 4px;
+        }
+
+        .location {
+          display: flex;
+          align-items: center;
+          color: #666;
+          margin-bottom: 12px;
+          font-size: 14px;
+        }
+
+        .location-icon {
+          margin-right: 6px;
+        }
+
+        .cafe-description {
+          margin-bottom: 16px;
+          font-size: 14px;
+          color: #555;
+        }
+
+        .events-heading {
+          font-size: 14px;
+          font-weight: 600;
+          margin-bottom: 8px;
+        }
+
+        .event-list {
+          margin-bottom: 16px;
+        }
+
+        .event-item {
+          display: flex;
+          align-items: center;
+          margin-bottom: 8px;
+          font-size: 14px;
+        }
+
+        .event-icon {
+          margin-right: 8px;
+          color: #6B21FF;
+        }
+
+        .event-date {
+          font-size: 12px;
+          color: #777;
+          margin-left: 4px;
+        }
+
+        .card-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .availability {
+          font-size: 14px;
+          color: #22C55E;
+        }
+
+        .availability.booked {
+          color: #EF4444;
+        }
+
+        /* Footer */
+        footer {
+          background-color: #111827;
+          color: white;
+          padding: 60px 20px 40px;
+        }
+
+        .footer-container {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 40px;
+          margin-bottom: 40px;
+        }
+
+        .footer-logo {
+          font-size: 24px;
+          font-weight: 600;
+          margin-bottom: 16px;
+          display: flex;
+          align-items: center;
+        }
+
+        .footer-description {
+          margin-bottom: 20px;
+          max-width: 300px;
+          opacity: 0.8;
+        }
+
+        .social-links {
+          display: flex;
+          gap: 16px;
+        }
+
+        .social-icon {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #374151;
+          color: white;
+          transition: background-color 0.3s ease;
+        }
+
+        .social-icon:hover {
+          background-color: #6B21FF;
+        }
+
+        .footer-section-title {
+          font-size: 18px;
+          font-weight: 600;
+          margin-bottom: 20px;
+        }
+
+        .footer-links {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .footer-link {
+          opacity: 0.8;
+          transition: opacity 0.3s ease;
+        }
+
+        .footer-link:hover {
+          opacity: 1;
+        }
+
+        .contact-info {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .contact-item {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          opacity: 0.8;
+        }
+
+        .newsletter-form {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .newsletter-input {
+          padding: 12px 16px;
+          border-radius: 6px;
+          border: none;
+          background-color: #1F2937;
+          color: white;
+        }
+
+        .subscribe-button {
+          background-color: #6B21FF;
+          color: white;
+          border: none;
+          padding: 12px;
+          border-radius: 6px;
+          font-weight: 500;
+          cursor: pointer;
+        }
+
+        .copyright {
+          text-align: center;
+          padding-top: 20px;
+          border-top: 1px solid #374151;
+          font-size: 14px;
+          opacity: 0.6;
+        }
+
+        /* Modal */
+        .modal {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          z-index: 1000;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .modal-content {
+          background-color: white;
+          border-radius: 12px;
+          width: 100%;
+          max-width: 500px;
+          max-height: 90vh;
+          overflow-y: auto;
+          position: relative;
+        }
+
+        .modal-header {
+          padding: 20px;
+          border-bottom: 1px solid #eee;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .modal-title {
+          font-size: 20px;
+          font-weight: 600;
+        }
+
+        .close-button {
+          background: none;
+          border: none;
+          font-size: 24px;
+          cursor: pointer;
+          color: #777;
+        }
+
+        .modal-body {
+          padding: 20px;
+        }
+
+        .form-group {
+          margin-bottom: 20px;
+        }
+
+        .form-label {
+          display: block;
+          margin-bottom: 8px;
+          font-weight: 500;
+        }
+
+        .form-input {
+          width: 100%;
+          padding: 12px;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          font-size: 16px;
+        }
+
+        .input-row {
+          display: flex;
+          gap: 20px;
+        }
+
+        .input-row .form-group {
+          flex: 1;
+        }
+
+        .form-textarea {
+          width: 100%;
+          padding: 12px;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          resize: vertical;
+          min-height: 100px;
+          font-size: 16px;
+        }
+
+        .modal-footer {
+          padding: 20px;
+          text-align: center;
+        }
+
+
+
+    /* --- Section Styling --- */
+    #apply-form {
+        background: #4B0082; /* Dark Purple Background */
+        color: white;
+        padding: 60px 20px;
+        text-align: center;
+    }
+
+    #apply-form h2 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    #apply-form p {
+        font-size: 1.1rem;
+        color: #dcdcdc;
+        margin-bottom: 30px;
+    }
+
+    /* --- Form Container --- */
+    .form-container {
+        max-width: 800px;
+        margin: auto;
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        color: black;
+        text-align: left;
+    }
+
+    /* --- Input Fields --- */
+    .form-container input,
+    .form-container textarea,
+    .form-container select {
+        width: 100%;
+        padding: 12px;
+        margin-top: 8px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 1rem;
+        outline: none;
+    }
+
+    .form-container textarea {
+        height: 120px;
+        resize: none;
+    }
+
+    /* --- Performance Type Selection --- */
+    .performance-type {
+        display: flex;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .performance-type label {
+        flex: 1;
+        padding: 15px;
+        background: #f3f3f3;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        font-size: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.3s ease-in-out;
+    }
+
+    .performance-type input[type="radio"] {
+        display: none;
+    }
+
+    .performance-type input[type="radio"]:checked + label {
+        background: rgba(106, 13, 173, 0.1);
+        border-color: #6a0dad;
+        color: #6a0dad;
+        font-weight: bold;
+    }
+
+    /* --- Upload Box --- */
+    .upload-box {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        text-align: center;
+        font-size: 1rem;
+        color: #666;
+        cursor: pointer;
+        border-radius: 10px;
+        transition: 0.3s;
+        margin-top: 10px;
+    }
+
+    .upload-box:hover {
+        border-color: #6a0dad;
+    }
+
+    /* --- Submit Button --- */
+    .submit-btn {
+        width: 100%;
+        background: #6a0dad;
+        color: white;
+        padding: 14px;
+        border: none;
+        font-size: 1.1rem;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s ease-in-out;
+        margin-top: 20px;
+    }
+
+    .submit-btn:hover {
+        background: #8e44ad;
+    }
+
+    /* --- Responsive Design (Mobile) --- */
+    @media (max-width: 768px) {
+        #apply-form {
+            padding: 40px 15px;
+        }
+
+        .form-container {
+            padding: 30px;
+        }
+
+        .performance-type {
+            flex-direction: column;
+        }
+
+        .performance-type label {
+            padding: 12px;
+        }
+    }
+
+
+
+
+
+
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+          .hero-title {
+            font-size: 40px;
+          }
+
+          .hero-subtitle {
+            font-size: 18px;
+          }
+
+          .hero-buttons {
+            flex-direction: column;
+            align-items: center;
+          }
+
+          .input-row {
+            flex-direction: column;
+            gap: 10px;
+          }
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<header>
+    <div class="header-container">
+        <a href="#" class="logo">
+            <span class="logo-icon">☕</span>
+            CaféStage
+        </a>
+        <nav class="nav-links">
+            <a href="#" class="nav-link">Home</a>
+            <a href="#" class="nav-link">Cafes</a>
+            <a href="#" class="nav-link">About</a>
+        </nav>
+        <a href="/perform" class="button button-primary perform-button">
+            <span class="button-icon">🎵</span>
+            Perform with Us
+        </a>
+    </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">Where <span>Cafes</span> Meet <span>Creativity</span></h1>
+        <p class="hero-subtitle">Book a table or showcase your talent at the city's most vibrant cafe venues</p>
+        <div class="hero-buttons">
+            <a href="#" class="button button-primary">Find a Cafe</a>
+            <a href="#" class="button button-outline">Apply to Perform</a>
+        </div>
+    </div>
+    <div class="scroll-down">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 5L12 19M12 19L5 12M12 19L19 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+</section>
+
+<!-- Cafes Section -->
+<section class="cafes-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Discover Cafes</h2>
+            <div class="filter-tabs">
+                <div class="filter-tab tab-active">All Cafes</div>
+                <div class="filter-tab tab-inactive">
+                    <span class="button-icon">🎵</span>
+                    Music Events
+                </div>
+                <div class="filter-tab tab-inactive">
+                    <span class="button-icon">🎭</span>
+                    Comedy Shows
+                </div>
+                <div class="filter-tab tab-inactive">
+                    <span class="button-icon">📅</span>
+                    Available Now
+                </div>
+            </div>
+        </div>
+
+        <section class="cafes-section">
+        <div class="cafes-grid">
+            <!-- Cafe 1 -->
+            <div class="cafe-container">
+                <div class="cafe-card" th:each="cafe : ${cafes}">
+                    <div class="card-image">
+                        <img th:src="${cafe.imageUrl}" alt="Cafe Image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="cafe-name" th:text="${cafe.name}">Cafe Name</h3>
+                        <div class="rating">
+                            <span class="star-icon">★</span>
+                            <span th:text="${cafe.rating}"></span>
+                        </div>
+                        <div class="location">
+                            <span class="location-icon">📍</span>
+                            <span th:text="${cafe.location}"></span>
+                        </div>
+                        <p class="cafe-description" th:text="${cafe.description}"></p>
+
+                        <h4 class="events-heading">Upcoming Events:</h4>
+                        <div class="event-list">
+                            <div class="event-item" th:each="event : ${cafe.events}">
+                                <span class="event-icon">🎵</span>
+                                <span th:text="${event.name}"></span>
+                                <span class="event-date" th:text="${#temporals.format(event.dateTime, 'MMM dd @ HH:mm')}"></span>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <div class="availability" th:text="${cafe.availableTables} + ' tables available'"></div>
+                            <button class="button button-primary booking-button">Book a Table</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        </section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-container">
+            <div class="footer-info">
+                <div class="footer-logo">
+                    <span class="logo-icon">☕</span>
+                    CaféStage
+                </div>
+                <p class="footer-description">Connecting cafes with talented performers to create unforgettable experiences for everyone.</p>
+                <div class="social-links">
+                    <a href="#" class="social-icon">
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm4.441 16.892c-2.102.144-6.784.144-8.883 0C5.282 16.736 5.017 15.622 5 12c.017-3.629.285-4.736 2.558-4.892 2.099-.144 6.782-.144 8.883 0C18.718 7.264 18.982 8.378 19 12c-.018 3.629-.285 4.736-2.559 4.892zM10 9.658l4.917 2.338L10 14.342V9.658z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm2.691 8.25H10.309v1.544h4.382V8.25zm-6.733 6.144c0-1.563 1.256-2.831 2.807-2.831 1.551 0 2.806 1.268 2.806 2.831 0 1.563-1.255 2.831-2.806 2.831-1.55 0-2.807-1.268-2.807-2.831zm7.465-3.031h3.6v7.3h-3.6v-7.3zm4.5-2.25h-11.85c-.416 0-.75.334-.75.75v10.5c0 .416.334.75.75.75h11.85c.416 0 .75-.334.75-.75V9.863c0-.416-.334-.75-.75-.75z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-2 16h-2v-6h2v6zm-1-6.891c-.607 0-1.1-.496-1.1-1.109 0-.612.492-1.109 1.1-1.109s1.1.497 1.1 1.109c0 .613-.493 1.109-1.1 1.109zm8 6.891h-1.998v-2.861c0-1.881-2.002-1.722-2.002 0v2.861h-2v-6h2v1.093c.872-1.616 4-1.736 4 1.548v3.359z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-links-section">
+                <h3 class="footer-section-title">Quick Links</h3>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Home</a>
+                    <a href="#" class="footer-link">Find a Cafe</a>
+                    <a href="#" class="footer-link">Perform with Us</a>
+                    <a href="#" class="footer-link">For Cafe Owners</a>
+                    <a href="#" class="footer-link">Blog</a>
+                </div>
+            </div>
+
+            <div class="footer-contact">
+                <h3 class="footer-section-title">Contact Us</h3>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"/>
+                        </svg>
+                        <span>info@cafestage.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20 22.621l-3.521-6.795c-.008.004-1.974.97-2.064 1.011-2.24 1.086-6.799-7.82-4.609-8.994l2.083-1.026-3.493-6.817-2.106 1.039c-7.202 3.755 4.233 25.982 11.6 22.615.121-.055 2.102-1.029 2.11-1.033z"/>
+                        </svg>
+                        <span>(123) 456-7890</span>
+                    </div>
+                    <div class="contact-item">
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/>
+                        </svg>
+                        <span>123 Coffee Street, Brewville, CA 94123</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-newsletter">
+                <h3 class="footer-section-title">Newsletter</h3>
+                <p class="footer-description">Subscribe to our newsletter for the latest events and promotions.</p>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Your email address">
+                    <button type="submit" class="subscribe-button">Subscribe</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="copyright">
+            © 2025 CaféStage. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+<!-- Booking Modal -->
+<div class="modal" id="bookingModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Book a Table</h2>
+            <button class="close-button">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" placeholder="John Doe" required>
+                </div>
+
+                <div class="input-row">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" placeholder="john@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" class="form-input" placeholder="(123) 456-7890" required>
+                    </div>
+                </div>
+
+                <div class="input-row">
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input type="text" class="form-input" placeholder="dd/mm/yyyy" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Time</label>
+                        <input type="text" class="form-input" placeholder="Select time" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Number of Guests</label>
+                    <input type="text" class="form-input" placeholder="2 people" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Special Requests (Optional)</label>
+                    <textarea class="form-textarea" placeholder="Any special requests or dietary requirements?"></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="button button-primary" style="width: 100%;">Continue to Payment</button>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" charset="utf-8">
+    // Get modal, close button, and booking buttons
+const modal = document.getElementById("bookingModal");
+const closeButton = document.querySelector(".close-button");
+const bookButtons = document.querySelectorAll(".booking-button"); // Updated class
+
+// Function to open modal
+function openModal() {
+  modal.style.display = "flex"; // Show modal
+}
+
+// Function to close modal
+function closeModal() {
+  modal.style.display = "none"; // Hide modal
+}
+
+// Attach event listeners to all "Book a Table" buttons
+bookButtons.forEach(button => {
+  button.addEventListener("click", openModal);
+});
+
+// Close modal when clicking the close button
+closeButton.addEventListener("click", closeModal);
+
+// Close modal when clicking outside the modal content
+window.addEventListener("click", function(event) {
+  if (event.target === modal) {
+    closeModal();
+  }
+});
+
+</script>
